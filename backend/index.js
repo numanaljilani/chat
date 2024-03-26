@@ -11,8 +11,9 @@ const path = require("path");
 
 const app = express();
 const _dirname = path.dirname("")
-const buildPath = path.join(_dirname,'../client/build')
-app.use(express.static(buildPath))
+const buildPath = path.join(_dirname,'../client/.next/static')
+const nextStaticPath = path.join(__dirname, '.next');
+app.use(express.static(nextStaticPath))
 app.use(cors({ origin: "*", credentials: false }));
 app.use(express.json());
 app.options("*", cors());

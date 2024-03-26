@@ -3,7 +3,7 @@ import { SendMsIcon, SmileFaceIcon } from "@/utils/icons";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-
+import server from "../../constant"
 const Piker = dynamic(
   () => {
     return import("emoji-picker-react");
@@ -22,7 +22,7 @@ function MessageInput({ getData }: any) {
   async function handleSubmit(e: { preventDefault: () => void; }) {
     e.preventDefault();
    const token =  await localStorage.getItem("token");
-    const res = await fetch("/message", {
+    const res = await fetch(`${server.server}/message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

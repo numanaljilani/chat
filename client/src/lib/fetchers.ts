@@ -1,4 +1,5 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import server from "../constant"
 
 export const login = async (
   e: any,
@@ -9,7 +10,7 @@ export const login = async (
   try {
     console.log(e.target[0].value);
     console.log(e.target[1].value);
-    const res = await fetch("/login", {
+    const res = await fetch(`${server.server}/login`, {
       method: "POST",
       body: JSON.stringify({
         email: e.target[0].value,
@@ -50,7 +51,7 @@ export async function fetchUser(
 export async function fetchMessages({ setData }: any) {
   try {
     const token =  await localStorage.getItem("token");
-    const res = await fetch("/message",{
+    const res = await fetch(`${server.server}/message`,{
       headers: {
         Authorization: `${token}`,
       },
