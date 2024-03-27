@@ -40,16 +40,16 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log(req.body);
+
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email : email?.toLowerCase() });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({sucess : false , error: "User not found" });
     }
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ sucess : false , error: "Password Check kro 1 bar" });
     }
     const token = await jwt.sign({ userId: user._id }, "secret");
     return res.send({ success: true, token });
@@ -66,21 +66,22 @@ app.post("/message", async (req, res) => {
     const { userId } = await jwt.verify(req.body.token, "secret");
     const user = await User.findById(userId);
     const res_message = await Message.create({ sender: user.name, message });
+    console.log(res_message);
     res.json({ success: true, message });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Login failed" });
+    res.status(500).json({ error: "Message failed" });
   }
 });
 
 app.get("/message", async (req, res) => {
   try {
     const token = req.headers.authorization
-    console.log(token)
     const { userId } = await jwt.verify(token, "secret");
     if (!userId) return;
-    const message = await Message.find().limit(20);
-    res.json({ success: true, message });
+    const message = await Message.find().sort({ createdAt: -1 }).limit(20);
+    console.log(message)
+    res.json({ success: true, message :message.reverse() });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Login failed" });

@@ -3,8 +3,9 @@ import server from "../constant"
 
 export const login = async (
   e: any,
-  router: AppRouterInstance
-  // socket : any
+  router: AppRouterInstance,
+  toast : any,
+  Slide : any
 ) => {
   e.preventDefault();
   try {
@@ -21,13 +22,48 @@ export const login = async (
       },
     });
     const data = await res.json();
+    console.log(data)
     if(data.success){
       await localStorage.setItem("token", data.token);
+      toast.success('🦄 ', {
+        position: "السلام عليكم",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+        });
       router.push("/fz");
+    }else{
+      toast.error(data.error || `something went wrong`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+        });
     }
 
-  } catch (error) {
+  } catch (error:any) {
     console.log(error);
+    toast.error(error?.message || `something went wrong`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Slide,
+      });
   }
 };
 

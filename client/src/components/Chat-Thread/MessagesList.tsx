@@ -1,22 +1,24 @@
 "use client";
 import React from "react";
 import MessageItem from "./MessageItem";
+import { ToastContainer } from "react-toastify";
 
 function MessagesList({data } : any) {
-console.log(data)
 
   return (
-    <div className="w-full mb-10 flex flex-col max-h-[75vg] no-scrollbar">
+    <div className="w-full   overflow-auto bottom-6 mb-10 flex flex-col no-scrollbar">
       {data
-        ? data?.map((item: any, i: number) => (
-            <div key={i}>
+        ? data?.reverse()?.map((item: any) => (
+            <div key={item._id}>
               <MessageItem
                 user={item.sender !== "me" ? true : false}
                 message={item.message}
+                time ={item.createdAt}
               />
             </div>
           ))
         : ""}
+
     </div>
   );
 }
